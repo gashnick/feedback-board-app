@@ -14,7 +14,7 @@ dist/
 out/
 
 # Dependency directories
-jspm_packages/ 
+jspm_packages/
 # TypeScript
 *.tsbuildinfo
 # Coverage
