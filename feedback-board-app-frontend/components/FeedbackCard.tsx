@@ -115,12 +115,12 @@ const FeedbackCard: FC<FeedbackCardProps> = ({
   };
 
   return (
-    <div className="card mb-4 p-5">
+    <div className="card mb-4 p-5 sm:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3">
         <h3 className="text-xl font-semibold text-primary-dark mb-2 sm:mb-0">
           {feedbackItem.title}
         </h3>
-        <span className="text-xs bg-secondary-light text-secondary-dark font-medium px-2.5 py-1 rounded-full capitalize">
+        <span className="text-xs bg-secondary-light text-secondary-dark font-medium px-2.5 py-1 rounded-full capitalize sm:*:ml-4">
           {feedbackItem.category}
         </span>
       </div>
