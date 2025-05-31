@@ -1,5 +1,5 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { API_URL } from "../config/config";
 
 // Define the structure of a feedback item (can be shared across components)
@@ -71,12 +71,10 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ onFeedbackSubmitted }) => {
       } else {
         setError(response.data.message || "Failed to submit feedback.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Submission error:", err);
-      const axiosError = err as AxiosError<SubmitFeedbackResponse>;
       setError(
-        axiosError.response?.data?.message ||
-          "An error occurred. Please try again."
+        err?.response?.data?.message || "An error occurred. Please try again."
       );
     } finally {
       setIsLoading(false);

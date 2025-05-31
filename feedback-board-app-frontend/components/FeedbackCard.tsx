@@ -1,9 +1,8 @@
 import { useState, useEffect, FC } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { API_URL } from "../config/config";
 import { FeedbackItem } from "./FeedbackForm"; // Re-using the interface
 
-// Define props for UpvoteIcon
 interface UpvoteIconProps {
   filled: boolean;
 }
@@ -25,16 +24,14 @@ const UpvoteIcon: FC<UpvoteIconProps> = ({ filled }) => (
   </svg>
 );
 
-// Define props for FeedbackCard
 interface FeedbackCardProps {
   feedbackItem: FeedbackItem;
   onUpvoteSuccess: (feedbackId: string, newUpvoteCount: number) => void;
 }
 
-// API response for upvoting
 interface UpvoteResponse {
   success: boolean;
-  data?: FeedbackItem; // The updated feedback item
+  data?: FeedbackItem;
   message?: string;
 }
 
@@ -58,7 +55,7 @@ const FeedbackCard: FC<FeedbackCardProps> = ({
       }
     } catch (e) {
       console.error("Failed to parse upvotedFeedback from localStorage", e);
-      localStorage.removeItem("upvotedFeedback"); // Clear corrupted data
+      localStorage.removeItem("upvotedFeedback");
     }
   }, [feedbackItem._id]);
 
@@ -89,16 +86,17 @@ const FeedbackCard: FC<FeedbackCardProps> = ({
           console.error("Failed to update upvotedFeedback in localStorage", e);
         }
 
-        if (onUpvoteSuccess) {
-          onUpvoteSuccess(feedbackItem._id, response.data.data.upvotes);
-        }
+        onUpvoteSuccess(feedbackItem._id, response.data.data.upvotes);
       } else {
         setError(response.data.message || "Failed to upvote.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Upvote error:", err);
-      const axiosError = err as AxiosError<UpvoteResponse>;
-      setError(axiosError.response?.data?.message || "An error occurred.");
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "An error occurred while upvoting."
+      );
     } finally {
       setIsLoading(false);
       setTimeout(() => setError(""), 3000);
@@ -163,5 +161,4 @@ const FeedbackCard: FC<FeedbackCardProps> = ({
 };
 
 export default FeedbackCard;
-// Exporting FeedbackItem interface to be used in other files if necessary
 export type { FeedbackItem };

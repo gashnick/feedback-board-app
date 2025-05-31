@@ -27,7 +27,7 @@ PORT=<port-number>
 
 ### Frontend Environment Variables
 
-Create a `.env` file in the `feedback-board-frontend` directory with the following variables:
+Create a `.env` file in the `feedback-board-app-frontend` directory with the following variables:
 
 ```
 NEXT_PUBLIC_API_URL=<backend-api-url>

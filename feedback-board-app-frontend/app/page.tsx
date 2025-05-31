@@ -1,11 +1,11 @@
 "use client";
 import Head from "next/head";
 import { useState, useEffect, useCallback, FC } from "react";
-import axios, { AxiosError } from "axios";
-import FeedbackForm from "../components/FeedbackForm";
-import FeedbackCard, { FeedbackItem } from "../components/FeedbackCard"; // Import FeedbackItem type
+import FeedbackForm, { FeedbackItem } from "../components/FeedbackForm";
+import FeedbackCard from "../components/FeedbackCard";
 import FilterSortControls from "../components/FilterSortControls";
 import { API_URL } from "../config/config";
+import axios from "axios";
 
 // API response for fetching feedbacks
 interface FetchFeedbacksResponse {
@@ -45,13 +45,13 @@ const Home: FC = () => {
         setError(response.data.message || "Failed to fetch feedbacks.");
         setFeedbacks([]);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Fetch error:", err);
-      const axiosError = err as AxiosError<FetchFeedbacksResponse>;
-      setError(
-        axiosError.response?.data?.message ||
-          "An error occurred while fetching data."
-      );
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "An error occurred while fetching data.";
+      setError(message);
       setFeedbacks([]);
     } finally {
       setIsLoading(false);
@@ -63,9 +63,8 @@ const Home: FC = () => {
   }, [fetchFeedbacks]);
 
   const handleFeedbackSubmitted = (newFeedback: FeedbackItem) => {
-    // Re-fetch to ensure correct sorting/filtering.
-    // Could also optimistically update: setFeedbacks(prev => [newFeedback, ...prev]) and then sort/filter client-side or trust the fetch.
-    fetchFeedbacks();
+    console.log("New feedback submitted:", newFeedback);
+    fetchFeedbacks(); // re-fetch to maintain sorting/filtering
   };
 
   const handleUpvoteSuccess = (feedbackId: string, newUpvoteCount: number) => {
@@ -75,8 +74,7 @@ const Home: FC = () => {
       )
     );
     if (selectedSort === "mostUpvoted") {
-      // Re-sort or re-fetch if sorted by upvotes
-      fetchFeedbacks();
+      fetchFeedbacks(); // refresh sorting if needed
     }
   };
 
@@ -108,6 +106,7 @@ const Home: FC = () => {
             <h2 className="text-2xl font-semibold text-neutral-darkest mb-4">
               Submitted Feedback
             </h2>
+
             <FilterSortControls
               categories={feedbackCategories}
               selectedCategory={selectedCategory}
@@ -115,12 +114,14 @@ const Home: FC = () => {
               selectedSort={selectedSort}
               onSortChange={setSelectedSort}
             />
+
             {isLoading && (
               <div className="text-center py-10">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
                 <p className="mt-3 text-neutral">Loading feedback...</p>
               </div>
             )}
+
             {error && (
               <p className="text-red-500 bg-red-100 p-4 rounded-md text-center">
                 {error}

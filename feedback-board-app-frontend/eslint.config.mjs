@@ -14,3 +14,14 @@ const eslintConfig = [
 ];
 
 export default eslintConfig;
+export const rules = {
+  "react/react-in-jsx-scope": "off",
+  "react/no-unescaped-entities": "off",
+  "@next/next/no-html-link-for-pages": ["error", "./src/pages/index.tsx"],
+  "@next/next/no-img-element": "off",
+  "@typescript-eslint/no-unused-vars": [
+    "warn",
+    { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+  ],
+  "@typescript-eslint/no-explicit-any": "off",
+};
