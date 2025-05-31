@@ -54,7 +54,7 @@ npm install
 #### Frontend
 
 ```bash
-cd feedback-board-frontend
+cd feedback-board-app-frontend
 npm install
 ```
 
@@ -94,6 +94,14 @@ The frontend application will start on `http://localhost:3000` by default.
 - `config/`: Configuration files.
 - `public/`: Static assets.
 - `styles/`: Global styles.
+
+## Features
+
+- **Feedback Submission**: Users can submit feedback through a form.
+- **Feedback Display**: Feedback is displayed in a list with sorting and filtering options.
+- **Responsive Design**: The application is fully responsive and works on all devices.
+- **API Integration**: The frontend communicates with the backend API for data operations.
+- **Database Storage**: Feedback data is stored in a database using Mongoose.
 
 ## License
 
